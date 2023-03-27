@@ -1,8 +1,9 @@
 import * as React from 'react';
-import {View, Text, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
+import {View, StyleSheet, FlatList, Alert} from 'react-native';
 import {useEffect, useState} from 'react';
-import LinearGradient from 'react-native-linear-gradient'; // import LinearGradient
+import LinearGradient from 'react-native-linear-gradient';
 import TodoCard from './TodoCard';
+import {fetchTodos} from './api';
 
 type ItemData = {
   id: string;
@@ -10,21 +11,27 @@ type ItemData = {
 };
 
 const TodoList = () => {
-  let [response, setResponse] = useState();
-  let [error, setError] = useState();
+  let [response, setResponse] = useState<ItemData[]>([]);
 
   const [selectedId, setSelectedId] = useState<string>();
 
   useEffect(() => {
     fetch('https://jsonplaceholder.typicode.com/todos')
+      .then(res => (res.ok ? res : Promise.reject(res)))
       .then(res => res.json())
-      .then(result => {
+      .then((result: ItemData[]) => {
         setResponse(result);
       })
-      .catch(error => {
-        setError(error);
-      });
+      .catch(() => Alert.alert('Error', 'Failed to load todos'));
   }, []);
+
+  // useEffect(() => {
+  //   fetchTodos()
+  //     .then((result: ItemData[]) => {
+  //       setResponse(result);
+  //     })
+  //     .catch(() => Alert.alert('Error', 'Failed to load todos'));
+  // }, []);
 
   const renderItem = ({item}: {item: ItemData}) => {
     const backgroundColor = item.id === selectedId ? '#6e3b6e' : '#f9c2ff';
