@@ -3,19 +3,19 @@ import {View, TextInput, Button, StyleSheet, Modal, Text} from 'react-native';
 import {Formik} from 'formik';
 import * as yup from 'yup';
 
-interface propsType {
+interface PropsType {
   onAddGoal: Function;
   hideModal: Function;
 }
 
-interface valueType {
+interface ValueType {
   header: string;
   text: string;
   id: string;
 }
 
-function GoalInput(props: propsType) {
-  function addGoalHandler(values: valueType) {
+function GoalInput(props: PropsType) {
+  function addGoalHandler(values: ValueType) {
     props.onAddGoal(values);
   }
 
@@ -52,7 +52,6 @@ function GoalInput(props: propsType) {
           }) => (
             <>
               <TextInput
-                name="header"
                 style={styles.textInput}
                 placeholder="Header"
                 onChangeText={handleChange('header')}
@@ -65,7 +64,6 @@ function GoalInput(props: propsType) {
                 </Text>
               )}
               <TextInput
-                name="text"
                 style={styles.textInput}
                 placeholder="Your course goal!"
                 onChangeText={handleChange('text')}
@@ -76,7 +74,6 @@ function GoalInput(props: propsType) {
                 <Text style={{fontSize: 14, color: 'red'}}>{errors.text}</Text>
               )}
               <TextInput
-                name="id"
                 style={styles.textInput}
                 placeholder="Your id"
                 onChangeText={handleChange('id')}

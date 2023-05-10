@@ -5,13 +5,13 @@ import GoalInput from './components/GoalInput';
 import GoalItem from './components/GoalItem';
 import TodoList from './components/TodoList';
 
-interface valueType {
+interface ValueType {
   header: string;
   text: string;
   id: string;
 }
 
-interface valuesType {
+interface EditValuesType {
   editHeader: string;
   editText: string;
   editId: string;
@@ -32,56 +32,51 @@ export default function App() {
     setIsVisibleModal(false);
   }
 
-  function addTask(values: valueType) {
+  function addTask(values: ValueType) {
     setCourseGoals(currentStateOfGoals => {
       currentStateOfGoals.push({
         text: values.text,
         id: values.id,
         header: values.header,
       } as never);
-      console.log(currentStateOfGoals);
       return [...currentStateOfGoals];
     });
     setIsVisibleModal(false);
-    // fetch('https://jsonplaceholder.typicode.com/todos', {
-    //   method: 'POST',
-    //   body: JSON.stringify({
-    //     title: values.text,
-    //     header: values.header,
-    //     userId: values.id,
-    //   }),
-    //   headers: {
-    //     'Content-type': 'application/json; charset=UTF-8',
-    //   },
-    // })
-    //   .then(response => response.json())
-    //   .then(json => console.log(json));
+    fetch('https://jsonplaceholder.typicode.com/todos', {
+      method: 'POST',
+      body: JSON.stringify({
+        title: values.text,
+        header: values.header,
+        userId: values.id,
+      }),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+    })
+      .then(response => response.json())
+      .then(json => console.log(json));
   }
 
   function deleteTask(id: string) {
     setCourseGoals(currentCourseGoals => {
-      return currentCourseGoals.filter(goal => (goal as valueType).id !== id);
+      return currentCourseGoals.filter(goal => (goal as ValueType).id !== id);
     });
 
-    // fetch(`https://jsonplaceholder.typicode.com/todos/${id}`, {
-    //   method: 'DELETE',
-    // });
+    fetch(`https://jsonplaceholder.typicode.com/todos/${id}`, {
+      method: 'DELETE',
+    });
   }
 
-  function checkID(goal: valueType, values: valuesType) {
-    if (goal.id === values.editId) {
-      console.log(goal.id);
-      goal.header = values.editHeader;
-      goal.text = values.editText;
-      console.log(courseGoals);
-    }
-  }
-
-  function editTask(values: valuesType) {
-    const result = courseGoals.filter(goal =>
-      checkID(goal as valueType, values as valuesType),
+  function editTask(values: EditValuesType) {
+    let i = courseGoals.findIndex(
+      goal => (goal as ValueType).id === values.editId,
     );
-    setCourseGoals(result);
+    const cloneCourseGoals = courseGoals.slice();
+    cloneCourseGoals[i].id = values.editId;
+    cloneCourseGoals[i].header = values.editHeader;
+    cloneCourseGoals[i].text = values.editText;
+    console.log(cloneCourseGoals);
+    setCourseGoals(cloneCourseGoals);
   }
 
   return (
@@ -98,16 +93,16 @@ export default function App() {
           renderItem={itemData => {
             return (
               <GoalItem
-                text={(itemData.item as valueType).text}
-                id={(itemData.item as valueType).id}
-                header={(itemData.item as valueType).header}
+                text={(itemData.item as ValueType).text}
+                id={(itemData.item as ValueType).id}
+                header={(itemData.item as ValueType).header}
                 onDeleteItem={deleteTask}
                 onEditItem={editTask}
               />
             );
           }}
           keyExtractor={item => {
-            return (item as valueType).id;
+            return `${(item as ValueType).id} ${(item as ValueType).header}`;
           }}
           alwaysBounceVertical={false}
         />

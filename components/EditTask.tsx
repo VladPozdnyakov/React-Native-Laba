@@ -3,7 +3,7 @@ import {View, TextInput, Button, StyleSheet, Modal, Text} from 'react-native';
 import {Formik} from 'formik';
 import * as yup from 'yup';
 
-interface propsType {
+interface PropsType {
   hideModal: Function;
   onEditItem: Function;
   id: string;
@@ -11,15 +11,15 @@ interface propsType {
   header: string;
 }
 
-interface valuesType {
+interface ValuesType {
   editHeader: string;
-  text: string;
-  id: string;
+  editText: string;
+  editId: string;
 }
 
-function EditTask(props: propsType) {
-  function postEditTask(values: valuesType) {
-    props.onEditItem(values, props.id);
+function EditTask(props: PropsType) {
+  function postEditTask(values: ValuesType) {
+    props.onEditItem(values);
   }
 
   const addTaskValidationSchema = yup.object().shape({
@@ -27,7 +27,7 @@ function EditTask(props: propsType) {
       .string()
       .max(42, ({max}) => `Header must be at least ${max} characters`)
       .required('Header is Required'),
-    text: yup
+    editText: yup
       .string()
       .max(200, ({max}) => `Goal must be at least ${max} characters`)
       .required('Goal is required'),
@@ -37,7 +37,7 @@ function EditTask(props: propsType) {
     <Modal visible={props.visible} animationType="slide">
       <View style={styles.inputContainer}>
         <Formik
-          // validationSchema={addTaskValidationSchema}
+          validationSchema={addTaskValidationSchema}
           initialValues={{
             editHeader: props.header,
             editText: props.text,
@@ -55,7 +55,6 @@ function EditTask(props: propsType) {
           }) => (
             <>
               <TextInput
-                name="editHeader"
                 style={styles.textInput}
                 placeholder="Header"
                 onChangeText={handleChange('editHeader')}
@@ -68,15 +67,16 @@ function EditTask(props: propsType) {
                 </Text>
               )}
               <TextInput
-                name="text"
                 style={styles.textInput}
                 placeholder="Your course goal!"
-                onChangeText={handleChange('text')}
-                onBlur={handleBlur('text')}
-                value={values.text}
+                onChangeText={handleChange('editText')}
+                onBlur={handleBlur('editText')}
+                value={values.editText}
               />
-              {errors.text && touched.text && (
-                <Text style={{fontSize: 14, color: 'red'}}>{errors.text}</Text>
+              {errors.editText && touched.editText && (
+                <Text style={{fontSize: 14, color: 'red'}}>
+                  {errors.editText}
+                </Text>
               )}
               <TextInput
                 style={styles.textInput}

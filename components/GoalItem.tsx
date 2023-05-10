@@ -3,7 +3,7 @@ import {useState} from 'react';
 import {StyleSheet, View, Text, Pressable, Image} from 'react-native';
 import EditTask from './EditTask';
 
-interface propsType {
+interface PropsType {
   onEditItem: Function;
   onDeleteItem: Function;
   id: string;
@@ -11,7 +11,7 @@ interface propsType {
   header: string;
 }
 
-function GoalItem(props: propsType) {
+function GoalItem(props: PropsType) {
   const [isVisibleModal, setIsVisibleModal] = useState(false);
 
   function showModal() {
