@@ -1,0 +1,15 @@
+export const darkTheme = {
+  mode: 'dark',
+  PRIMARY_BACKGROUND_COLOR: '#212121',
+  PRIMARY_TEXT_COLOR: '#ffffff',
+  PRIMARY_BUTTON_COLOR: '#ffffff',
+  PRIMARY_BUTTON_TEXT_COLOR: '#4B0082',
+};
+
+export const lightTheme = {
+  mode: 'light',
+  PRIMARY_BACKGROUND_COLOR: '#D8BFD8',
+  PRIMARY_TEXT_COLOR: '#212121',
+  PRIMARY_BUTTON_COLOR: '#8022d9',
+  PRIMARY_BUTTON_TEXT_COLOR: '#ffffff',
+};
