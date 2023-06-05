@@ -1,8 +1,9 @@
 import * as React from 'react';
-import {View, StyleSheet, FlatList, Alert} from 'react-native';
+import {View, StyleSheet, FlatList, ActivityIndicator} from 'react-native';
 import {useEffect, useState} from 'react';
 import TodoCard from './TodoCard';
-import {fetchTodos} from '../services/api';
+import {useDispatch, useSelector} from 'react-redux';
+import {fetchTodosThunk} from '../asyncActions/fetchTodosThunk';
 
 type ItemData = {
   id: string;
@@ -10,16 +11,16 @@ type ItemData = {
 };
 
 const TodoList = () => {
-  let [response, setResponse] = useState<ItemData[]>([]);
+  const dispatch = useDispatch();
+
+  const todos = useSelector(state => state.todosReducer.todos);
+
+  const loading = useSelector(state => state.todosReducer.isLoading);
 
   const [selectedId, setSelectedId] = useState<string>();
 
   useEffect(() => {
-    fetchTodos()
-      .then((result: ItemData[]) => {
-        setResponse(result);
-      })
-      .catch(() => Alert.alert('Error', 'Failed to load todos'));
+    dispatch(fetchTodosThunk());
   }, []);
 
   const renderItem = ({item}: {item: ItemData}) => {
@@ -35,8 +36,9 @@ const TodoList = () => {
 
   return (
     <View style={styles.container}>
+      <View>{loading && <ActivityIndicator />}</View>
       <FlatList
-        data={response}
+        data={todos}
         renderItem={renderItem}
         keyExtractor={item => item.id}
         extraData={selectedId}

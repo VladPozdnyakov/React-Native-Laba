@@ -1,12 +1,6 @@
 import React from 'react';
 import {useState} from 'react';
-import {
-  StyleSheet,
-  View,
-  FlatList,
-  Button,
-  TouchableOpacity,
-} from 'react-native';
+import {StyleSheet, View, FlatList, Button} from 'react-native';
 import GoalInput from './components/GoalInput';
 import GoalItem from './components/GoalItem';
 import TodoList from './components/TodoList';
@@ -27,8 +21,9 @@ interface EditValuesType {
   editId: string;
 }
 
-export default function HomeScreen() {
+export default function MainPage() {
   const theme = useSelector(state => state.themeReducer.theme);
+
   const dispatch = useDispatch();
 
   const [courseGoals, setCourseGoals] = useState([]);
@@ -117,9 +112,9 @@ export default function HomeScreen() {
             }}
             alwaysBounceVertical={false}
           />
-          {/* <View style={styles.apiContainer}>
+        </View>
+        <View style={styles.apiContainer}>
           <TodoList />
-        </View> */}
         </View>
 
         {theme.mode === 'light' ? (
@@ -152,9 +147,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flex: 5,
   },
-  // apiContainer: {
-  //   flex: 4,
-  // },
+  apiContainer: {
+    flex: 5,
+  },
   imageContainer: {
     flex: 1,
   },
