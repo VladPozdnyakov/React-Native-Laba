@@ -4,6 +4,7 @@ import {useEffect, useState} from 'react';
 import TodoCard from './TodoCard';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchTodosThunk} from '../asyncActions/fetchTodosThunk';
+import LoadingSpinner from './CustomLoading';
 
 type ItemData = {
   id: string;
@@ -36,7 +37,7 @@ const TodoList = () => {
 
   return (
     <View style={styles.container}>
-      <View>{loading && <ActivityIndicator />}</View>
+      <View>{loading && <LoadingSpinner />}</View>
       <FlatList
         data={todos}
         renderItem={renderItem}
